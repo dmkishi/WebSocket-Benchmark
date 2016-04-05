@@ -1,5 +1,7 @@
 /* Ultra-minimal stylesheet, i.e. no normalize.css, no box-sizing, nothing. */
 
+.flash { font-style: italic; }
+
 .table      { display: table; margin-top: .75em; }
 .table-row  { display: table-row; }
 .table-cell { display: table-cell; padding-right: .25em; }
