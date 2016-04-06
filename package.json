@@ -1,5 +1,5 @@
 {
-  "name": "Streams",
+  "name": "WebSocket Benchmark",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
