@@ -23,13 +23,25 @@ server.listen(HTTP_PORT, () => {
 
 // Manage WebSockets
 wss.on('connection', (ws) => {
+  var i, cnt, startTime, endTime;
+
   console.log('WebSocket opened!'.green);
 
   ws.on('message', (raw_msg) => {
     msg = JSON.parse(raw_msg);
+
     if (msg.instruction) {
-      // Respond with an echo
       ws.send(raw_msg);
+      i         = 0;
+      cnt       = Math.floor(msg.benchmark_dur / msg.test_interval);
+      startTime = Date.now() + msg.time_to_benchmark;
+      setTimeout(function() {
+        console.log(`${i}/${cnt}`);
+        console.log(`Total duration: ${endTime - startTime}`);
+      }, msg.ttl);
+    } else {
+      console.log(++i, msg);
+      if (i === cnt) endTime = Date.now();
     }
   });
 
