@@ -19,6 +19,26 @@ var newMsg = (function() {
   };
 })();
 
+// Initiate benchmark by sending benchmark instructions to the server, then
+// immediately commence benchmark testing. Re instructions, we won't bother with
+// server responses and assume succesful transmission; this keeps the code
+// simple and makes timing calculations easier.
+function startBenchmark(instruction) {
+  // Do all prep work first...
+  newMsg('<li>Starting <i>' + instruction.name + '</i>....</li>');
+  var benchmarkFuncName     = instruction.name.toLowerCase().replace(/ /,'');
+  var benchmarkDataFuncName = benchmarkFuncName + 'Data';
+  var data = window[benchmarkDataFuncName](instruction);
+
+  // ...then send instruction and begin benchmark testing.
+  ws.send(JSON.stringify(instruction));
+  setTimeout(function() {
+    window[benchmarkFuncName](instruction, data);
+  }, instruction.time_to_start);
+}
+
+
+
 
 // 1 ***************************************************************************
 newMsg('<li>Starting benchmark.</li>');
@@ -54,24 +74,6 @@ ws.onopen = function(evt) {
 
 
 // 4 ***************************************************************************
-// Initiate benchmark by sending benchmark instructions to the server, then
-// immediately commence benchmark testing. Re instructions, we won't bother with
-// server responses and assume succesful transmission; this keeps the code
-// simple and makes timing calculations easier.
-function startBenchmark(instruction) {
-  // Do all prep work first...
-  newMsg('<li>Starting <i>' + instruction.name + '</i>....</li>');
-  var benchmarkFuncName     = instruction.name.toLowerCase().replace(/ /,'');
-  var benchmarkDataFuncName = benchmarkFuncName + 'Data';
-  var data = window[benchmarkDataFuncName](instruction);
-
-  // ...then send instruction and begin benchmark testing.
-  ws.send(JSON.stringify(instruction));
-  setTimeout(function() {
-    window[benchmarkFuncName](instruction, data);
-  }, instruction.time_to_start);
-}
-
 function benchmark1(instr, data) {
   var benchmark_interval = setInterval(function() {
     if (data.length) {
