@@ -40,7 +40,6 @@ ws.onopen = function(evt) {
   newMsg('<li>SUCCESS!</li>');
   doBenchmark1({
     instruction:       true,
-    sig:               getRandomInt(0, 999999),
     name:              'Benchmark 1',
     description:       'sdasdfasdfasdf',
     time_to_benchmark: 1000,
@@ -60,7 +59,7 @@ function doBenchmark1(instruction) {
   ws.onmessage = function(evt) {
     window.clearTimeout(instruction_timeout);
 
-    if (evt.data !== String(instruction.sig + 1)) {
+    if (evt.data !== JSON.stringify(instruction)) {
       newMsg('<li>ERROR: Bad response from server.</li>' +
              '<li>ERROR: Aborting benchmark.</li>');
     }

@@ -28,7 +28,8 @@ wss.on('connection', (ws) => {
   ws.on('message', (raw_msg) => {
     msg = JSON.parse(raw_msg);
     if (msg.instruction) {
-      ws.send(String(msg.sig + 1));
+      // Respond with an echo
+      ws.send(raw_msg);
     }
   });
 
