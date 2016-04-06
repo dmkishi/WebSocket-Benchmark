@@ -30,15 +30,18 @@ wss.on('connection', (ws) => {
   ws.on('message', (raw_msg) => {
     msg = JSON.parse(raw_msg);
 
-    if (msg.instruction) {
-      ws.send(raw_msg);
+    if (msg.is_instruction) {
+      startTime = Date.now() + msg.time_to_start;
       i         = 0;
-      cnt       = Math.floor(msg.benchmark_dur / msg.test_interval);
-      startTime = Date.now() + msg.time_to_benchmark;
+      cnt       = Math.floor(msg.duration / msg.interval);
+
       setTimeout(function() {
-        console.log(`${i}/${cnt}`);
-        console.log(`Total duration: ${endTime - startTime}`);
-      }, msg.ttl);
+        ws.send(JSON.stringify({
+          i:         i,
+          cnt:       cnt,
+          total_dur: endTime - startTime
+        }));
+      }, msg.time_to_live);
     } else {
       console.log(++i, msg);
       if (i === cnt) endTime = Date.now();
