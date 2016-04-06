@@ -44,41 +44,43 @@ ws.onopen = function(evt) {
     description:       'sdasdfasdfasdf',
     time_to_benchmark: 1000,
     benchmark_dur:     1000,
-    interval:          15,
+    test_interval:     15,
     ttl:               3000
   });
 };
 ws.onmessage = function(evt) {
-  console.log(evt);
+  // This shouldn't happen.
+  console.error(evt);
 };
 
 
 // 4 ***************************************************************************
-function doBenchmark1(instruction) {
-  newMsg('<li>Starting <i>' + instruction.name + '</i>.</li>');
+function doBenchmark1(inst) {
+  newMsg('<li>Starting <i>' + inst.name + '</i>.</li>');
   ws.onmessage = function(evt) {
-    window.clearTimeout(instruction_timeout);
+    window.clearTimeout(inst_timeout);
 
-    if (evt.data !== JSON.stringify(instruction)) {
+    if (evt.data !== JSON.stringify(inst)) {
       newMsg('<li>ERROR: Bad response from server.</li>' +
              '<li>ERROR: Aborting benchmark.</li>');
     }
 
-    var data = makeBenchmark1Data(666);
+    var data = makeBenchmark1Data(Math.floor(inst.benchmark_dur / inst.test_interval));
     window.setTimeout(function() {
       var benchmark = window.setInterval(function() {
         if (!data.length) {
           window.clearInterval(benchmark);
         }
         ws.send(data.pop());
-      }, instruction.interval);
-    }, instruction.time_to_benchmark);
+      }, inst.interval);
+    }, inst.time_to_benchmark);
   };
-  ws.send(JSON.stringify(instruction));
-  var instruction_timeout = window.setTimeout(function() {
+  
+  ws.send(JSON.stringify(inst));
+  var inst_timeout = window.setTimeout(function() {
     newMsg('<li>ERROR: Server did not respond to benchmark instruction!</li>' +
            '<li>ERROR: Aborting benchmark.</li>');
-  }, instruction.ttl);
+  }, inst.ttl);
 }
 
 function makeBenchmark1Data(cnt) {
