@@ -19,29 +19,70 @@ var newMsg = (function() {
   };
 })();
 
-// Initiate benchmark by sending benchmark instructions to the server, then
-// immediately commence benchmark testing. Re instructions, we won't bother with
-// server responses and assume succesful transmission; this keeps the code
-// simple and makes timing calculations easier.
-function startBenchmark(instruction) {
-  // Do all prep work first...
-  newMsg('<li>Starting <i>' + instruction.name + '</i>....</li>');
-  var benchmarkFuncName     = instruction.name.toLowerCase().replace(/ /,'');
-  var benchmarkDataFuncName = benchmarkFuncName + 'Data';
-  var data = window[benchmarkDataFuncName](instruction);
-
-  // ...then send instruction and begin benchmark testing.
-  ws.send(JSON.stringify(instruction));
-  setTimeout(function() {
-    window[benchmarkFuncName](instruction, data);
-  }, instruction.time_to_start);
+function Benchmarks(instructions) {
+  this.instructions = instructions || [];
 }
+Benchmarks.prototype = {
+  start: function() {
+    this.next();
+  },
+  // Initiate benchmark by sending benchmark instructions to the server, then
+  // immediately commence benchmark testing. Re instructions, we won't bother
+  // with server responses and assume succesful transmission; this keeps the
+  // code simple and makes timing calculations easier.
+  next: function() {
+    if (this.instructions.length === 0) return this.end();
+
+    var instruction = this.instructions.shift();
+
+    // Do all prep work first...
+    newMsg('<li>Starting <i>' + instruction.name + '</i>....</li>');
+    var benchmarkFuncName     = instruction.name.toLowerCase().replace(/ /,'');
+    var benchmarkDataFuncName = benchmarkFuncName + 'Data';
+    var data = window[benchmarkDataFuncName](instruction);
+
+    // ...then send instruction and begin benchmark testing.
+    ws.send(JSON.stringify(instruction));
+    setTimeout(function() {
+      window[benchmarkFuncName](instruction, data);
+    }, instruction.time_to_start);
+  },
+  end: function() {
+    newMsg('<li>Completed benchmark.</li>');
+  }
+};
 
 
 
 
 // 1 ***************************************************************************
 newMsg('<li>Starting benchmark.</li>');
+var benchmarks = new Benchmarks([
+  {
+    is_instruction: true,
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       15,
+    time_to_live:   3000
+  },
+  {
+    is_instruction: true,
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       10,
+    time_to_live:   3000
+  },
+  {
+    is_instruction: true,
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       5,
+    time_to_live:   3000
+  }
+]);
 
 
 // 2 ***************************************************************************
@@ -62,14 +103,7 @@ ws.onmessage = function(evt) {
 };
 ws.onopen = function(evt) {
   newMsg('<li>SUCCESS! WebSocket connection has been established.</li>');
-  startBenchmark({
-    is_instruction: true,
-    name:           'Benchmark 1',
-    time_to_start:  1000,
-    duration:       1000,
-    interval:       10,
-    time_to_live:   3000
-  });
+  benchmarks.start();
 };
 
 
@@ -88,6 +122,7 @@ function benchmark1(instr, data) {
     newMsg('<li>SUCCESS! ' + msg.i + '/' + msg.cnt + ' text frames sent at ' +
            instr.interval + ' ms. intervals over a duration of ' +
            msg.total_dur + ' ms.</li>');
+    benchmarks.next();
   };
 }
 
