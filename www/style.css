@@ -1,13 +1,2 @@
 /* Basic stylesheet, i.e. no normalize.css, no box-sizing, nothing. */
 
-.flash { font-style: italic; }
-
-.table      { display: table; margin-top: .75em; }
-.table-row  { display: table-row; }
-.table-cell { display: table-cell; padding-right: .25em; }
-
-h1, h2, .h1, .h2 { margin: 0; }
-.h1, .h2 { font-weight: bold; }
-h1, .h1 { font-style: italic; }
-h2, .h2 { font-size: 21px; }
-ul { margin: 0; padding: 0; }
