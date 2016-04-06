@@ -38,18 +38,7 @@ ws.onerror = function(evt) {
 };
 ws.onopen = function(evt) {
   newMsg('<li>SUCCESS!</li>');
-  benchmark1();
-};
-ws.onmessage = function(evt) {
-  console.log(evt);
-};
-
-
-// 4 ***************************************************************************
-function benchmark1() {
-  newMsg('<li>Starting <i>Benchmark 1</i>.</li>');
-  // Instead of sig, just echo back?
-  var instruction = {
+  doBenchmark1({
     instruction:       true,
     sig:               getRandomInt(0, 999999),
     name:              'Benchmark 1',
@@ -58,7 +47,16 @@ function benchmark1() {
     benchmark_dur:     1000,
     interval:          15,
     ttl:               3000
-  };
+  });
+};
+ws.onmessage = function(evt) {
+  console.log(evt);
+};
+
+
+// 4 ***************************************************************************
+function doBenchmark1(instruction) {
+  newMsg('<li>Starting <i>' + instruction.name + '</i>.</li>');
   ws.onmessage = function(evt) {
     window.clearTimeout(instruction_timeout);
 
