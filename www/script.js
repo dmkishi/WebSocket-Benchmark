@@ -38,6 +38,8 @@ var instructions = [
 // Benchmark Formulas ----------------------------------------------------------
 // Send dummy data to server at specified intervals
 function benchmark1(instr, data) {
+  var sampleLength = data[0].length;
+
   var benchmarkInterval = setInterval(function() {
     if (data.length) {
       ws.send(data.pop());
@@ -48,8 +50,9 @@ function benchmark1(instr, data) {
 
   ws.onmessage = function(evt) {
     var msg = JSON.parse(evt.data);
-    newMsg('<li>Completed! ' + msg.i + '/' + msg.cnt + ' text frames sent at ' +
-           instr.interval + ' ms. intervals over a duration of ' +
+    newMsg('<li>Completed! ' + msg.i + '/' + msg.cnt + ' text frames ' +
+           '(consisting of about ' + sampleLength + ' characters each) sent ' +
+           'at ' + instr.interval + ' ms. intervals over a duration of ' +
            msg.total_dur + ' ms.</li>');
     benchmarks.next();
   };
