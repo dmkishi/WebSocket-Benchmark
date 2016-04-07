@@ -31,6 +31,7 @@ wss.on('connection', (ws) => {
     msg = JSON.parse(raw_msg);
 
     if (msg.is_instruction) {
+      console.log('New instruction:\n'.green, msg);
       startTime = Date.now() + msg.time_to_start;
       i         = 0;
       cnt       = Math.floor(msg.duration / msg.interval);
