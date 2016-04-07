@@ -38,11 +38,11 @@ var instructions = [
 // Benchmark Formulas ----------------------------------------------------------
 // Send dummy data to server at specified intervals
 function benchmark1(instr, data) {
-  var benchmark_interval = setInterval(function() {
+  var benchmarkInterval = setInterval(function() {
     if (data.length) {
       ws.send(data.pop());
     } else {
-      clearInterval(benchmark_interval);
+      clearInterval(benchmarkInterval);
     }
   }, instr.interval);
 
