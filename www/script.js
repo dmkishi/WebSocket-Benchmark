@@ -81,9 +81,6 @@ function benchmark1(instr) {
   };
 }
 
-function benchmark1Data() {
-}
-
 // Send dummy data to server at specified intervals
 function benchmark2(instr, data) {
   var sampleLength = data[0].length;
@@ -139,7 +136,9 @@ Benchmarks.prototype = {
     newMsg('<li>Starting <i>' + instruction.name + '</i>....</li>');
     var benchmarkFuncName     = instruction.name.toLowerCase().replace(/ /,'');
     var benchmarkDataFuncName = benchmarkFuncName + 'Data';
-    var data = window[benchmarkDataFuncName](instruction);
+    var data = (typeof window[benchmarkDataFuncName] === 'undefined') ?
+               null :
+               window[benchmarkDataFuncName](instruction);
 
     // ...then send instruction and begin benchmark testing.
     ws.send(JSON.stringify(instruction));
