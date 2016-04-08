@@ -164,8 +164,8 @@ function benchmark3(instr) {
     })();
     var avgLatencyTime = avgEchoTime / 2;
     newMsg('<li>COMPLETED! ' + received_i + '/' + send_cnt + ' echo responses ' +
-           'were received with an average echo time of ' + avgEchoTime + ' ms ' +
-           'or an average latency time of ' + avgLatencyTime + ' ms.</li>');
+           'were received with an average RTT of ' + avgEchoTime + ' ms or a ' +
+           'calculated average latency time of ' + avgLatencyTime + ' ms.</li>');
     benchmarks.next();
   }, instr.time_to_live);
 
