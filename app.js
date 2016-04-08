@@ -1,4 +1,6 @@
-const HTTP_PORT  = 8000;
+"use strict";
+
+const HTTP_PORT = 8000;
 
 var server  = require('http').createServer();
 var express = require('express');
@@ -62,7 +64,7 @@ var benchmarks = {
 
     return function(rawMsg) {
       ws.send(rawMsg);
-    }; 
+    };
   }
 };
 

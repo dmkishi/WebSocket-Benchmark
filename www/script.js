@@ -1,3 +1,5 @@
+"use strict";
+
 // Benchmark Instructions ------------------------------------------------------
 var instructions = [
   {
