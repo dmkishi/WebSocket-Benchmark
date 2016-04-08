@@ -5,7 +5,7 @@ How many text frames a second can we send? What's the latency for a text frame?
 #### Report
 Text frame size doesn't seem to affect performance, at least with payloads in the order of less than 100 KB. Marked performance dip is seen when interval length dips below 5 ms. Not surprisingly, latency is minimal (in the order 1 ms.) for intra-machine communications, with it increasing to an average of 6.2 ms over WiFi, which is expected.
 
-In conclusion, reasonable performance can be expected reasonable payloads of 100 KB or less at transmission of 100 times per second (or intervals of 10 ms.)
+In conclusion, reasonable performance can be expected for payloads of 100 KB or less at a transmission frequency of 100 times per second (i.e. intervals of 10 ms.)
 
 - **Localhost**
   - Empty text frames:
