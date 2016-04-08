@@ -2,7 +2,7 @@
 var instructions = [
   {
     is_instruction: true,
-    name:           'Benchmark 1',
+    name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
     interval:       15,
@@ -10,7 +10,7 @@ var instructions = [
   },
   {
     is_instruction: true,
-    name:           'Benchmark 1',
+    name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
     interval:       10,
@@ -18,7 +18,7 @@ var instructions = [
   },
   {
     is_instruction: true,
-    name:           'Benchmark 1',
+    name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
     interval:       5,
@@ -26,7 +26,7 @@ var instructions = [
   },
   {
     is_instruction: true,
-    name:           'Benchmark 1',
+    name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
     interval:       3,
@@ -37,7 +37,7 @@ var instructions = [
 
 // Benchmark Formulas ----------------------------------------------------------
 // Send dummy data to server at specified intervals
-function benchmark1(instr, data) {
+function benchmark2(instr, data) {
   var sampleLength = data[0].length;
 
   var benchmarkInterval = setInterval(function() {
@@ -59,7 +59,7 @@ function benchmark1(instr, data) {
 }
 
 // Make dummy motion orientation data
-function benchmark1Data(instr) {
+function benchmark2Data(instr) {
   var cnt = Math.floor(instr.duration / instr.interval);
   var data = [];
   for (var i = 0; i < cnt; ++i) {
