@@ -4,6 +4,13 @@ var instructions = [
     name:           'Benchmark 1',
     time_to_start:  1000,
     duration:       1000,
+    interval:       20,
+    time_to_live:   3000
+  },
+  {
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
     interval:       15,
     time_to_live:   3000
   },
@@ -26,6 +33,13 @@ var instructions = [
     time_to_start:  1000,
     duration:       1000,
     interval:       3,
+    time_to_live:   3000
+  },
+  {
+    name:           'Benchmark 2',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       20,
     time_to_live:   3000
   },
   {
