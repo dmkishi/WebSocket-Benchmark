@@ -8,6 +8,36 @@ var colors  = require('colors');
 var ip      = require('ip');
 
 
+var benchmarks = {
+  isActive: false,
+  set: function(benchmarkName, ws, msg) {
+    benchmarks.isActive = true;
+    return benchmarks[benchmarkName](ws, msg);
+  },
+  benchmark2: function(ws, msg) {
+    setTimeout(function() {
+      ws.send(JSON.stringify({
+        i:         i,
+        cnt:       cnt,
+        total_dur: endTime - startTime
+      }));
+      benchmarks.isActive = false;
+    }, msg.time_to_live);
+
+    var i         = 0;
+    var cnt       = Math.floor(msg.duration / msg.interval);
+    var startTime = Date.now() + msg.time_to_start;
+    var endTime;
+
+    return function(rawMsg) {
+      var msg = JSON.parse(rawMsg);
+      console.log(++i, msg);
+      if (i === cnt) endTime = Date.now();
+    };
+  }
+};
+
+
 
 // Start HTTP server
 console.log('Starting up the HTTP server....');
@@ -23,29 +53,18 @@ server.listen(HTTP_PORT, () => {
 
 // Manage WebSockets
 wss.on('connection', (ws) => {
-  var i, cnt, startTime, endTime;
-
   console.log('WebSocket opened!'.green);
 
-  ws.on('message', (raw_msg) => {
-    msg = JSON.parse(raw_msg);
+  var benchmark;
 
-    if (msg.is_instruction) {
+  ws.on('message', (rawMsg) => {
+    if (!benchmarks.isActive) {
+      var msg = JSON.parse(rawMsg);
+      var benchmarkName = msg.name.toLowerCase().replace(/ /,'');
+      benchmark = benchmarks.set(benchmarkName, ws, msg);
       console.log('New instruction:\n'.green, msg);
-      startTime = Date.now() + msg.time_to_start;
-      i         = 0;
-      cnt       = Math.floor(msg.duration / msg.interval);
-
-      setTimeout(function() {
-        ws.send(JSON.stringify({
-          i:         i,
-          cnt:       cnt,
-          total_dur: endTime - startTime
-        }));
-      }, msg.time_to_live);
     } else {
-      console.log(++i, msg);
-      if (i === cnt) endTime = Date.now();
+      benchmark(rawMsg);
     }
   });
 
