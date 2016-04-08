@@ -1,7 +1,6 @@
 // Benchmark Instructions ------------------------------------------------------
 var instructions = [
   {
-    is_instruction: true,
     name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
@@ -9,7 +8,6 @@ var instructions = [
     time_to_live:   3000
   },
   {
-    is_instruction: true,
     name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
@@ -17,7 +15,6 @@ var instructions = [
     time_to_live:   3000
   },
   {
-    is_instruction: true,
     name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
@@ -25,7 +22,6 @@ var instructions = [
     time_to_live:   3000
   },
   {
-    is_instruction: true,
     name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
