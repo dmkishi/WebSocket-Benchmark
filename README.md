@@ -7,6 +7,7 @@ Text frame size doesn't seem to affect performance, at least with payloads in th
 
 In conclusion, reasonable performance can be expected for payloads of 100 KB or less at a transmission frequency of 100 times per second (i.e. intervals of 10 ms.)
 
+#### Data
 - **Localhost**
   - Empty text frames:
     - 50/50 sent at 20 ms. intervals over a duration of 1000 ms.
