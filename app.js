@@ -14,6 +14,26 @@ var benchmarks = {
     benchmarks.isActive = true;
     return benchmarks[benchmarkName](ws, msg);
   },
+  benchmark1: function(ws, msg) {
+    setTimeout(function() {
+      ws.send(JSON.stringify({
+        i:         i,
+        cnt:       cnt,
+        total_dur: endTime - startTime
+      }));
+      benchmarks.isActive = false;
+    }, msg.time_to_live);
+
+    var i         = 0;
+    var cnt       = Math.floor(msg.duration / msg.interval);
+    var startTime = Date.now() + msg.time_to_start;
+    var endTime;
+
+    return function(rawMsg) {
+      console.log(++i);
+      if (i === cnt) endTime = Date.now();
+    };
+  },
   benchmark2: function(ws, msg) {
     setTimeout(function() {
       ws.send(JSON.stringify({

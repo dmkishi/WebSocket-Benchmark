@@ -1,6 +1,34 @@
 // Benchmark Instructions ------------------------------------------------------
 var instructions = [
   {
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       15,
+    time_to_live:   3000
+  },
+  {
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       10,
+    time_to_live:   3000
+  },
+  {
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       5,
+    time_to_live:   3000
+  },
+  {
+    name:           'Benchmark 1',
+    time_to_start:  1000,
+    duration:       1000,
+    interval:       3,
+    time_to_live:   3000
+  },
+  {
     name:           'Benchmark 2',
     time_to_start:  1000,
     duration:       1000,
@@ -32,6 +60,30 @@ var instructions = [
 
 
 // Benchmark Formulas ----------------------------------------------------------
+// Send empty payload to server at specified intervals
+function benchmark1(instr) {
+  var cnt = Math.floor(instr.duration / instr.interval);
+
+  var benchmarkInterval = setInterval(function() {
+    if (cnt--) {
+      ws.send('');
+    } else {
+      clearInterval(benchmarkInterval);
+    }
+  }, instr.interval);
+
+  ws.onmessage = function(evt) {
+    var msg = JSON.parse(evt.data);
+    newMsg('<li>COMPLETED! ' + msg.i + '/' + msg.cnt + ' empty text frames ' +
+           'sent at ' + instr.interval + ' ms. intervals over a duration of ' +
+           msg.total_dur + ' ms.</li>');
+    benchmarks.next();
+  };
+}
+
+function benchmark1Data() {
+}
+
 // Send dummy data to server at specified intervals
 function benchmark2(instr, data) {
   var sampleLength = data[0].length;
