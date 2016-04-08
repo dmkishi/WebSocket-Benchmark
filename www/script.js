@@ -55,6 +55,13 @@ var instructions = [
     duration:       1000,
     interval:       3,
     time_to_live:   3000
+  },
+  {
+    name:           'Benchmark 3',
+    time_to_start:  1000,
+    duration:       2000,
+    interval:       100,
+    time_to_live:   4000
   }
 ];
 
@@ -103,7 +110,7 @@ function benchmark2(instr, data) {
   };
 }
 
-// Make dummy motion orientation data
+// Make simulated motion orientation data
 function benchmark2Data(instr) {
   var cnt = Math.floor(instr.duration / instr.interval);
   var data = [];
@@ -115,6 +122,44 @@ function benchmark2Data(instr) {
     }));
   }
   return data;
+}
+
+// Latency test: measure text frame echo
+function benchmark3(instr) {
+  var send_cnt   = Math.floor(instr.duration / instr.interval);
+  var sent_i     = 0;
+  var received_i = 0;
+  var echoTimes  = [];
+  var sendTime;
+
+  var benchmarkInterval = setInterval(function() {
+    if (++sent_i <= send_cnt) {
+      sendTime = Date.now();
+      ws.send(sent_i);
+    } else {
+      clearInterval(benchmarkInterval);
+    }
+  }, instr.interval);
+
+  var benchmarkTimeout = setTimeout(function() {
+    var avgEchoTime = (function() {
+      var sum = echoTimes.reduce(function(a, b) { return a+b; });
+      return sum / echoTimes.length;
+    })();
+    var avgLatencyTime = avgEchoTime / 2;
+    newMsg('<li>COMPLETED! ' + received_i + '/' + send_cnt + ' echo responses ' +
+           'were received with an average echo time of ' + avgEchoTime + ' ms ' +
+           'or an average latency time of ' + avgLatencyTime + ' ms.</li>');
+    benchmarks.next();
+  }, instr.time_to_live);
+
+  ws.onmessage = function(evt) {
+    received_i++;
+    var msg      = evt.data;
+    var echoTime = Date.now() - sendTime;
+    echoTimes.push(echoTime);
+    newMsg('<li>Echo ' + msg + ': ' + echoTime + ' ms. elapsed.');
+  };
 }
 
 

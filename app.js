@@ -54,6 +54,15 @@ var benchmarks = {
       console.log(++i, msg);
       if (i === cnt) endTime = Date.now();
     };
+  },
+  benchmark3: function(ws, msg) {
+    setTimeout(function() {
+      benchmarks.isActive = false;
+    }, msg.time_to_live);
+
+    return function(rawMsg) {
+      ws.send(rawMsg);
+    }; 
   }
 };
 
