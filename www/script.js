@@ -50,7 +50,7 @@ function benchmark2(instr, data) {
 
   ws.onmessage = function(evt) {
     var msg = JSON.parse(evt.data);
-    newMsg('<li>Completed! ' + msg.i + '/' + msg.cnt + ' text frames ' +
+    newMsg('<li>COMPLETED! ' + msg.i + '/' + msg.cnt + ' text frames ' +
            '(consisting of about ' + sampleLength + ' characters each) sent ' +
            'at ' + instr.interval + ' ms. intervals over a duration of ' +
            msg.total_dur + ' ms.</li>');
@@ -103,7 +103,7 @@ Benchmarks.prototype = {
     this.next();
   },
   end: function() {
-    newMsg('<li>Benchmark complete.</li>');
+    newMsg('<li>All benchmark tests completed.</li>');
   }
 };
 
@@ -127,12 +127,12 @@ var newMsg = (function() {
 
 
 // Main ------------------------------------------------------------------------
-newMsg('<li>Starting benchmark.</li>');
+newMsg('<li>Commencing benchmark tests.</li>');
 var benchmarks = new Benchmarks(instructions);
 
 
 var url = getWebSocketURL();
-newMsg('<li>Making WebSocket connection at <code>' + url + '</code>....</li>');
+newMsg('<li>Establishing WebSocket connection at <code>' + url + '</code>....</li>');
 
 
 var ws = new WebSocket(url);
@@ -146,6 +146,6 @@ ws.onmessage = function(evt) {
   console.error(evt);
 };
 ws.onopen = function(evt) {
-  newMsg('<li>SUCCESS! WebSocket connection has been established.</li>');
+  newMsg('<li>SUCCESS! WebSocket connection established.</li>');
   benchmarks.start();
 };
