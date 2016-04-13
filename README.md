@@ -1,9 +1,9 @@
 # Websocket Benchmark
 
 #### Report
-WebSocket message size doesn't seem to affect performance, at least for payloads in the order 100 KB or less, which is within the bounds of our simulated device orientation data. However, there is a marked performance dip when the message frequency is increased to over 200 times a second (or interval periods of less than 5 ms.) This may be indicative of the limits of TCP itself. For localhost communications, not surprisingly, latency is minimal (in the order 1 ms. or less), increasing to an average of 6.2 ms over WiFi, which is within the expected range.
+WebSocket message size doesn't seem to affect performance, at least for payloads in the order 100 KB or less, which is within the bounds of our simulated scenario of streamed device orientation data. However, there is a marked performance drop when the message frequency is increased to over 200 times a second (or interval periods of less than 5 ms.) This may be indicative of the limits of TCP itself, however. For localhost communications, unsurprisingly, latency is minimal in the order 1 ms. or less, increasing to an average of 6.2 ms over WiFi, which is within the expected range.
 
-For reference, pings to the router averaged 1.8 ms., naively suggesting an end-to-end delay of about 0.9 ms. Perhaps performance closer to this order can be achieved with HTTP/2 and [QUIC](https://en.wikipedia.org/wiki/QUIC), an experimental UDP protocol over browsers.
+For reference, pings to the router averaged 1.8 ms., naively suggesting an end-to-end delay of about 0.9 ms. Perhaps performance in this range can be achieved with HTTP/2 and [QUIC](https://en.wikipedia.org/wiki/QUIC), an experimental UDP protocol over browsers.
 
 In conclusion, optimal WebSocket performance can be expected for payloads of 100 KB or less at a message frequency of 100 times per second (or intervals of 10 ms.)
 
